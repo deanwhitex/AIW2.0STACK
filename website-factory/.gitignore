@@ -1,0 +1,41 @@
+changelog.md
+watch-changes.mjs
+.DS_Store
+**/.DS_Store
+**/node_modules/
+**/node_modules [0-9]*/
+node_modules [0-9]*/
+**/dist/
+**/qa-screenshots/
+*.local
+
+# Secrets
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# Apify cache (per-client, regenerable)
+clients/*/Pipeline Data/research/apify-cache/
+clients/*/Pipeline Data/research/.apify-logs/
+clients/*/Pipeline Data/research/raw-*.json
+
+# Per-section build cache (per-client, regenerable)
+clients/*/Pipeline Data/build-cache/
+
+# Tool runtime artifacts
+tools/.cache/
+
+# Git worktrees (managed by .git, not committed)
+.claude/worktrees/
+
+# Per-student agency profile (filled by /setup-agency)
+clients/_agency/agency-brand.json
+clients/_agency/assets/*
+!clients/_agency/assets/.gitkeep

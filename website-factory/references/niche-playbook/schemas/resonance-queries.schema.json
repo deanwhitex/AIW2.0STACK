@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./resonance-queries.schema.json",
+  "title": "Niche playbook: resonance-queries",
+  "description": "Reddit / social mining query templates per niche. SOP 15 fills the templates with the client's city/state/service and runs Apify reddit-scraper-lite against the listed subreddits. Optional file — present only if the niche playbook opts into resonance mining.",
+  "type": "object",
+  "required": ["queryTemplates", "subreddits"],
+  "additionalProperties": false,
+  "properties": {
+    "$schemaVersion": { "type": "integer", "const": 1 },
+    "queryTemplates": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 12,
+      "items": {
+        "type": "string",
+        "description": "Query template with {city}, {state}, {primaryService}, {nicheCategory} placeholders. Example: \"{primaryService} {city}\", \"{city} {nicheCategory} recommendations\"."
+      }
+    },
+    "subreddits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cityBased": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^r/\\{[a-z]+\\}$" },
+          "description": "Templated subreddit names with {city} or {state} placeholders. Example: [\"r/{city}\", \"r/{state}\"]."
+        },
+        "nicheGeneral": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^r/[A-Za-z0-9_]+$" },
+          "description": "Static niche-relevant subreddits. Example for contractor: [\"r/HomeImprovement\", \"r/Roofing\"]; hospitality: [\"r/weddingplanning\", \"r/travel\"]."
+        },
+        "audience": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^r/[A-Za-z0-9_]+$" },
+          "description": "Audience-side subreddits (people in the buying mode). Example: [\"r/HomeOwners\", \"r/firsttimehomebuyer\"]."
+        }
+      }
+    },
+    "perQueryLimits": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "posts": { "type": "integer", "minimum": 10, "maximum": 200, "default": 50 },
+        "commentsPerPost": { "type": "integer", "minimum": 0, "maximum": 500, "default": 100 }
+      }
+    },
+    "costCapUsd": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 2.0,
+      "default": 0.5,
+      "description": "Hard upper bound per-client for Apify Reddit spend. Stage 15 stops if exceeded."
+    }
+  }
+}

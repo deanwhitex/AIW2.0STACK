@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./theme.schema.json",
+  "title": "Niche playbook: theme",
+  "description": "Light/dark/both theme support per niche. Module 2D determines from the top-of-niche pool's typical mode. SOP 13 + Stage 9 build agent read this.",
+  "type": "object",
+  "required": ["default"],
+  "additionalProperties": false,
+  "properties": {
+    "$schemaVersion": { "type": "integer", "const": 1 },
+    "default": {
+      "type": "string",
+      "enum": ["light", "dark"],
+      "description": "The default mode rendered by the build agent for clients in this niche."
+    },
+    "toggle": {
+      "type": "boolean",
+      "default": false,
+      "description": "Whether the build agent emits both modes + a nav toggle. Default false (single-mode per client)."
+    },
+    "perClientOverride": {
+      "type": "boolean",
+      "default": true,
+      "description": "Whether per-client brand-dna.theme_mode can override the niche default."
+    }
+  }
+}

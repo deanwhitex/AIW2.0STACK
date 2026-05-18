@@ -1,0 +1,4 @@
+{
+  "$comment": "Template registry. Per-niche entries written by Module 2D when /build-niche-template runs. No `default` entry: every niche must be generated from research before Stage 10.1 can build a client.",
+  "byNiche": {}
+}

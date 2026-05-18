@@ -1,0 +1,92 @@
+# Dependencies
+node_modules/
+
+# npm lockfile (project uses bun.lock; npm may regenerate this as a side
+# effect of npm subprocesses, but it should not be tracked)
+package-lock.json
+
+# Generated files
+dist/
+build/
+
+# Test fixtures simulate "generated dist" trees; keep them tracked so tests
+# can copy them into tmp git repos and assert is-generated behavior.
+!tests/framework-fixtures/**/dist/
+!tests/framework-fixtures/**/dist/**
+
+# Build artifacts
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Claude Code local state
+.claude/projects/
+.claude/scheduled_tasks.lock
+.claude/settings.local.json
+
+# Environment
+.env
+.env.local
+
+# Cloudflare
+.wrangler/
+
+# Impeccable-owned project files are split: generated sidecars/config may be
+# tracked, but runtime recovery state and local assets should stay local.
+.impeccable/live/server.json
+.impeccable/live/sessions/
+.impeccable/live/annotations/
+.impeccable/live/cache/
+.impeccable/history/
+
+# Legacy live mode session file + annotation screenshots
+.impeccable-live.json
+.impeccable-live/
+
+# Legacy per-project live mode injection config. New installs use
+# .impeccable/live/config.json in the project root instead.
+**/skills/impeccable/scripts/config.json
+
+# Extension build artifacts
+extension/detector/
+
+# Legacy design context (pre-v3.1, auto-migrated to PRODUCT.md by load-context.mjs)
+.impeccable.md
+# Note: PRODUCT.md and DESIGN.md are INTENTIONALLY tracked in this repo —
+# they serve as reference implementations for users installing impeccable.
+# Users of impeccable in their own projects can choose whether to track them.
+
+# Evals (private, commercial)
+evals/
+tests/evals-v2/
+
+# Generated sub-pages (legacy, now replaced by Astro content collections)
+site/public/docs/
+site/public/anti-patterns/
+site/public/tutorials/
+site/public/visual-mode/
+site/public/slop/
+
+# Build artifacts written to site/public/ so Astro copies them to build/
+site/public/_data/
+site/public/_headers
+site/public/_redirects
+site/public/_routes.json
+site/public/js/detect-antipatterns-browser.js
+site/public/js/generated/
+
+# Note: harness skill directories (.claude/skills/, .cursor/skills/, etc.)
+# are intentionally tracked. npx skills reads them from this repo at install
+# time, and they enable clean submodule use. Run `bun run build` to refresh
+# them after editing skill/.
+#
+# Codex CLI consumes `.agents/skills/`; `.codex/` is not used. Ignore it so
+# local artifacts or old trees are never committed.
+.codex/
+.astro/

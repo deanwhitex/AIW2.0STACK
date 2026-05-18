@@ -1,0 +1,326 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "./brand-dna.schema.json",
+  "title": "Brand DNA",
+  "description": "Per-client brand DNA extracted by Stage 7 (brand-dna-agent). Consumed by Stage 9 (hero generation) and Stage 10.1 (template-overlay build via tools/build-from-template.py). Schema describes the universal shape every niche template's brand-dna.js must satisfy. Niche-specific extensions live under nicheExtensions.{slug}. Required fields: client_slug, company_name, company_tagline, region, shape_mode, shape_motif, theme_mode, voice_register, palette, typography, services, copy.",
+  "type": "object",
+  "required": [
+    "client_slug",
+    "company_name",
+    "company_tagline",
+    "region",
+    "shape_mode",
+    "shape_motif",
+    "theme_mode",
+    "voice_register",
+    "insurance_focus",
+    "segment",
+    "palette",
+    "typography",
+    "logo",
+    "trust",
+    "certifications",
+    "founder",
+    "contact",
+    "business_hours",
+    "hero",
+    "special_offers",
+    "taglines"
+  ],
+  "additionalProperties": true,
+  "properties": {
+    "$schema": { "type": "string" },
+    "client_slug": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "URL-safe client identifier, used for client-data folder naming."
+    },
+    "company_name": { "type": "string", "minLength": 1 },
+    "company_tagline": { "type": "string", "minLength": 1 },
+    "region": {
+      "type": "string",
+      "enum": ["florida", "texas", "northeast_us", "midwest_us", "southeast_us", "pacific_northwest", "southwest_us", "mountain_west", "default"],
+      "description": "Service region, used by Nano Banana hero image generation for regional house style defaults."
+    },
+    "shape_mode": {
+      "type": "string",
+      "enum": ["sharp", "softened", "curved"],
+      "description": "Shape language. Sharp = zero radius (default), softened = subtle 4px, curved = 12px+. Currently informational only — website template uses sharp 0px radius across the board."
+    },
+    "shape_motif": {
+      "type": "string",
+      "enum": ["polygon", "triangle", "wave", "arc", "dot-grid", "hexagon", "chevron", "diamond", "cross-hatch", "mountain", "topographic"],
+      "description": "Background SVG pattern selector. The website template's BackgroundPattern component reads this to mount the matching pattern from src/assets/bg-patterns/{shape_motif}.svg. The ONE per-client visual variance allowed under template-approach. Default: polygon."
+    },
+    "corner_overlay": {
+      "type": "object",
+      "required": ["motif", "color"],
+      "additionalProperties": false,
+      "properties": {
+        "motif": {
+          "type": "string",
+          "enum": ["polygon", "triangle", "wave", "arc", "hexagon", "chevron", "diamond", "mountain", "rectangle"],
+          "description": "Shape silhouette for decorative corner overlays. Anchored to section corners as ambient brand texture. Defaults to shape_motif so corners share visual language with the full-section BackgroundPattern. Use `rectangle` to get a flat block of accent tint instead of a geometric silhouette (useful for clients whose brand language reads cleaner as solid corner blocks). Both shape AND color vary per client per Rule 58."
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$",
+          "description": "Hex color for the corner overlay shape. Defaults to palette.accent so corners carry the per-client brand accent."
+        },
+        "opacity": {
+          "type": "number",
+          "minimum": 0.02,
+          "maximum": 0.25,
+          "description": "Opacity of the corner overlay shape. Lower for light section backgrounds (0.04-0.08), higher for darker (0.12-0.18). Default: 0.08."
+        }
+      },
+      "description": "Per-client corner overlay system. Renders a single large motif-shaped silhouette at each section corner, tinted in palette.accent at low opacity. Both motif and color vary per client. See 09-build.md Rule 58 and brand-dna-agent.md Rule 5."
+    },
+    "theme_mode": {
+      "type": "string",
+      "enum": ["light", "dark"],
+      "description": "Single theme mode for the per-client build. NO toggle. Decided by brand-dna-agent based on logo brightness + brand-resonance.theme_mode_recommendation when present. Default: light."
+    },
+    "voice_register": {
+      "type": "string",
+      "enum": ["commercial", "family", "premium"],
+      "description": "Copy tone hint consumed by Stage 6 copy-deck-agent. commercial = direct/industrial/insurance-focused, family = warm/owner-led/community, premium = restrained/heritage/high-touch. Default: family."
+    },
+    "insurance_focus": {
+      "type": "string",
+      "enum": ["dominant", "mentioned", "absent"],
+      "description": "How prominently insurance claims feature in the client's positioning. Dominant = lead with it, mentioned = secondary, absent = retail/cash market only."
+    },
+    "segment": {
+      "type": "string",
+      "enum": ["residential", "commercial", "mixed"]
+    },
+
+    "palette": {
+      "type": "object",
+      "required": ["primary", "secondary", "muted", "text_body", "silver", "accent"],
+      "additionalProperties": false,
+      "properties": {
+        "primary": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+        "secondary": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+        "muted": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+        "text_body": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+        "silver": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+        "accent": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+        "accent_light": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$", "description": "Patched in by tools/derive-accent-stops.py (HSL +18L -8S from accent)" },
+        "accent_mid": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$", "description": "Patched in by tools/derive-accent-stops.py (HSL -22L +6S from accent)" },
+        "accent_dark": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$", "description": "Patched in by tools/derive-accent-stops.py (HSL -42L +8S from accent)" },
+        "surface": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$", "description": "Page background colour. Cool off-white default (#F5F7FA) used by Stage 8 Claude design system if absent." }
+      }
+    },
+
+    "typography": {
+      "type": "object",
+      "required": ["heading", "body", "heading_url", "body_url"],
+      "additionalProperties": false,
+      "properties": {
+        "heading": { "type": "string", "minLength": 1 },
+        "body": { "type": "string", "minLength": 1 },
+        "heading_url": { "type": "string", "minLength": 1, "description": "Google Fonts URL segment, e.g. 'Bebas+Neue'" },
+        "body_url": { "type": "string", "minLength": 1, "description": "Google Fonts URL segment, e.g. 'Montserrat:wght@400;500;600;700'" },
+        "mono": { "type": "string", "minLength": 1, "description": "Optional monospace font for technical labels. Stage 8 falls back to JetBrains Mono if absent." },
+        "mono_url": { "type": "string", "minLength": 1, "description": "Optional Google Fonts URL segment for the mono font, e.g. 'JetBrains+Mono:wght@400;500;600'." }
+      }
+    },
+
+    "logo": {
+      "type": "object",
+      "required": ["path", "format", "multi_color", "has_wordmark", "has_motif"],
+      "additionalProperties": false,
+      "properties": {
+        "path": { "type": "string", "description": "Relative path to the logo file in client-data/[client]/assets/logo/" },
+        "format": { "type": "string", "enum": ["svg", "png"] },
+        "multi_color": { "type": "boolean" },
+        "has_wordmark": { "type": "boolean" },
+        "has_motif": { "type": "boolean", "description": "True if logo contains a graphic mark (e.g. lightning bolt, mountain, shield)." },
+        "motif_description": { "type": "string", "description": "If has_motif is true, describe the mark for downstream prompt injection (hero image generation, background pattern selection)." }
+      }
+    },
+
+    "trust": {
+      "type": "object",
+      "required": ["license_number", "google_rating", "google_review_count", "facebook_rating", "facebook_review_count", "bbb_rating", "years_in_business"],
+      "additionalProperties": false,
+      "properties": {
+        "license_number": { "type": "string", "minLength": 1 },
+        "google_rating": { "type": "number", "minimum": 0, "maximum": 5 },
+        "google_review_count": { "type": "integer", "minimum": 0 },
+        "facebook_rating": { "type": "number", "minimum": 0, "maximum": 5 },
+        "facebook_review_count": { "type": "integer", "minimum": 0 },
+        "bbb_rating": { "type": "string", "pattern": "^([A-F][+-]?|)$", "description": "BBB letter grade (A+, A, B, etc.) or empty string when not researched / unlisted." },
+        "years_in_business": { "type": "integer", "minimum": 0 }
+      }
+    },
+
+    "certifications": {
+      "type": "object",
+      "description": "Per-client certification booleans. Which certs/affiliations matter (and which are required) is niche-driven: see templates/{active-niche-slug}/niche-playbook/trust-signals.json for the niche's curated badge library and match keywords. The property list below is the contractor / home-services default vocabulary; non-contractor niches may add their own boolean fields under additionalProperties.",
+      "additionalProperties": true,
+      "properties": {
+        "haag": { "type": "boolean" },
+        "bbb": { "type": "boolean" },
+        "owens_corning": { "type": "boolean" },
+        "certainteed": { "type": "boolean" },
+        "gaf": { "type": "boolean" },
+        "gaf_master_elite": { "type": "boolean" },
+        "tamko": { "type": "boolean" },
+        "iko": { "type": "boolean" },
+        "atlas": { "type": "boolean" },
+        "nrca": { "type": "boolean" },
+        "rejuvaroof": { "type": "boolean" },
+        "genflex": { "type": "boolean" },
+        "mule_hide": { "type": "boolean" },
+        "carlisle": { "type": "boolean" },
+        "firestone": { "type": "boolean" },
+        "johns_manville": { "type": "boolean" },
+        "versico": { "type": "boolean" },
+        "energy_star": { "type": "boolean" },
+        "tesla_solar": { "type": "boolean" },
+        "sunpower": { "type": "boolean" },
+        "licensed": { "type": "boolean" },
+        "insured": { "type": "boolean" }
+      }
+    },
+
+    "founder": {
+      "type": "object",
+      "required": ["name", "title", "photo_path", "story_paragraph_1", "story_paragraph_2", "personal_guarantee_quote"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "first_name": { "type": "string", "minLength": 1, "description": "First token of name. Used by Stage 13 proposal-builder for conversational copy ('{first name} will call within 5 minutes'). Set by brand-dna-agent.md Step 4 from research.ownerName." },
+        "title": { "type": "string", "minLength": 1 },
+        "photo_path": { "type": "string" },
+        "cutout_path": { "type": "string", "description": "Optional. Relative path to owner cutout PNG with transparent background. Set only when has_owner_cutout is true." },
+        "story_paragraph_1": { "type": "string", "minLength": 1 },
+        "story_paragraph_2": { "type": "string", "minLength": 1 },
+        "personal_guarantee_quote": { "type": "string", "minLength": 1, "description": "First-person quote from the founder. ZERO em-dashes." }
+      }
+    },
+
+    "contact": {
+      "type": "object",
+      "required": ["phone", "phone_tel_link", "email", "address", "service_areas", "google_maps_embed_url"],
+      "additionalProperties": false,
+      "properties": {
+        "phone": { "type": "string", "minLength": 1, "description": "Display format e.g. (407) 451-5342" },
+        "phone_tel_link": { "type": "string", "pattern": "^\\+?[0-9]+$", "description": "tel: link target, e.g. +14074515342" },
+        "email": { "type": "string", "format": "email" },
+        "address": { "type": "string", "minLength": 1 },
+        "service_areas": { "type": "array", "items": { "type": "string" }, "minItems": 1 },
+        "google_maps_embed_url": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "business_hours": {
+      "type": "object",
+      "required": ["open", "close", "tz"],
+      "additionalProperties": false,
+      "description": "Used by the niche template's persistent mobile CTA element to swap primary action between phone (in-hours) and form (after-hours). Sourced from GBP hours in research.json.",
+      "properties": {
+        "open": { "type": "string", "pattern": "^[0-9]{2}:[0-9]{2}$", "description": "24-hour HH:MM, e.g. 07:00" },
+        "close": { "type": "string", "pattern": "^[0-9]{2}:[0-9]{2}$", "description": "24-hour HH:MM, e.g. 18:00" },
+        "tz": { "type": "string", "minLength": 1, "description": "IANA timezone, e.g. America/Phoenix" }
+      }
+    },
+
+    "hero": {
+      "type": "object",
+      "required": ["eyebrow", "h1_headline", "tagline", "mood"],
+      "additionalProperties": false,
+      "properties": {
+        "eyebrow": { "type": "string", "minLength": 1 },
+        "h1_headline": { "type": "string", "minLength": 1, "description": "Format: [Service] + [Location] + [Trust Signal]. Max 10 words." },
+        "tagline": { "type": "string", "minLength": 1 },
+        "mood": { "type": "string", "enum": ["stormy_dramatic_dusk", "golden_hour_warm", "overcast_calm", "midday_bright", "desert_high_sun"] }
+      }
+    },
+
+    "special_offers": {
+      "type": "object",
+      "required": ["discount_amount", "groups", "financing"],
+      "additionalProperties": false,
+      "properties": {
+        "discount_amount": { "type": "integer", "minimum": 0 },
+        "groups": {
+          "type": "array",
+          "items": { "type": "string", "enum": ["first_responders", "educators", "military_veterans", "seniors"] },
+          "minItems": 1,
+          "maxItems": 4
+        },
+        "financing": {
+          "type": "object",
+          "required": ["enabled", "partner"],
+          "additionalProperties": false,
+          "properties": {
+            "enabled": { "type": "boolean" },
+            "partner": { "type": "string", "description": "Financing partner name. Empty string if enabled is false." }
+          }
+        }
+      }
+    },
+
+    "taglines": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Short marketing taglines the build agent renders wherever the niche template surfaces them (trust strip rotations, footer, ticker, etc.)."
+    },
+
+    "manual_overrides": {
+      "type": "object",
+      "additionalProperties": true,
+      "description": "Per-client overrides recorded by Stage 1 intake or Stage 7 lessons (e.g. founder_photo_primary, segment_lean). Anything that should bypass auto-extraction lives here."
+    },
+
+    "niche": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Niche slug (from Module 2C `/pick-niche`). Resolves to the niche template at `templates/{niche}/` and the niche playbook at `templates/{niche}/niche-playbook/`. The factory uses this slug to find niche-specific values for every stage."
+    },
+
+    "templateVersion": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Version of the niche template + playbook used for this client build. Incremented by `/refine-template` after lessons-driven updates. The factory records the version with each build so regressions can be traced."
+    },
+
+    "jsonLdType": {
+      "type": "string",
+      "default": "LocalBusiness",
+      "description": "Schema.org @type for the JSON-LD block. Set per niche by Module 2D (e.g. \"RoofingContractor\", \"LodgingBusiness\", \"ProfessionalService\", \"Restaurant\", \"MedicalBusiness\", \"Store\"). scripts/inject-theme.mjs reads this field; defaults to \"LocalBusiness\" if absent."
+    },
+
+    "motion": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Per-client motion overrides. The niche playbook's `motion-preset.json` is the default; values here override.",
+      "properties": {
+        "preset": {
+          "type": "string",
+          "enum": ["restrained", "energetic", "custom"],
+          "description": "Override the niche playbook's motion preset for this client."
+        },
+        "tier2Enabled": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Override the niche playbook's enabled Tier 2 patterns."
+        }
+      }
+    },
+
+    "nicheExtensions": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": true
+      },
+      "description": "Per-niche extension fields keyed by niche slug. Schema for each niche's extension lives at templates/{niche}/niche-playbook/research-extensions.schema.json (if present). Example: nicheExtensions.{niche}.{field}."
+    }
+  }
+}

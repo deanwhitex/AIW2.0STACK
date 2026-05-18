@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./trust-signals.schema.json",
+  "title": "Niche playbook: trust-signals",
+  "description": "The niche's curated trust badge / certification / affiliation library. Each entry has match-keywords that Stage 4 fuzzy-matches against research.certifications to populate per-client badges. The library ships with the niche playbook and is FROZEN during client runs (Stage 4 reads but never modifies).",
+  "type": "object",
+  "required": ["badges", "trustStripCount", "placements"],
+  "additionalProperties": false,
+  "properties": {
+    "$schemaVersion": { "type": "integer", "const": 1 },
+    "trustStripCount": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 12,
+      "description": "How many badges render in the niche template's primary trust signal surface. Typical ranges: 3-5 for editorial, 4-6 for trades / home-services, 6+ for B2B. The actual surface name varies per niche (strip, floating pill, inline list, etc.)."
+    },
+    "placements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": ["hero", "floating-strip", "why-choose-us", "reviews", "footer", "service-page", "about-page", "trust-strip-only"]
+      },
+      "description": "Components where the trust badges render. Niche playbook lists 3-5 placements typically."
+    },
+    "badges": {
+      "type": "array",
+      "description": "Curated badge library for this niche. Each badge has match keywords for fuzzy lookup against research data. Badge image files live alongside this schema at templates/{slug}/niche-playbook/trust-badges/{id}.{ext}.",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "matchKeywords", "filename"],
+        "additionalProperties": false,
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+$",
+            "description": "Stable identifier. Matches the badge image filename stem."
+          },
+          "name": {
+            "type": "string",
+            "minLength": 2,
+            "description": "Display name (e.g. \"Mr & Mrs Smith Recommended\")."
+          },
+          "matchKeywords": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 2 },
+            "description": "Substrings the asset-scraper fuzzy-matches against research data to detect whether a client qualifies for this badge. Case-insensitive."
+          },
+          "filename": {
+            "type": "string",
+            "pattern": "^[a-z0-9-]+\\.(svg|png|jpg|webp)$",
+            "description": "Badge image filename inside niche-playbook/trust-badges/. SVG preferred, then PNG."
+          },
+          "issuer": {
+            "type": "string",
+            "description": "Organisation that issues this certification / affiliation. Used in the badge's title attribute for accessibility."
+          },
+          "issuerUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "Where the client can verify or apply for this certification."
+          },
+          "validationRegex": {
+            "type": "string",
+            "description": "Optional regex to confirm a client's certification number matches the format the issuer uses. Stops fabricated numbers passing QA."
+          },
+          "tier": {
+            "type": "string",
+            "enum": ["entry", "mid", "premium", "elite"],
+            "description": "Optional tier tag so the trust signal surface can prefer higher-tier badges when more than `trustStripCount` qualify."
+          },
+          "isMultiColor": {
+            "type": "boolean",
+            "default": false,
+            "description": "If true, the badge keeps its official multi-colour palette. If false, the build agent applies monochrome (single accent or pure white). Default false."
+          }
+        }
+      }
+    }
+  }
+}

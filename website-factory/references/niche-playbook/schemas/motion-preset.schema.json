@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./motion-preset.schema.json",
+  "title": "Niche playbook: motion-preset",
+  "description": "Niche motion preset selection. Determines which Tier 2 motion patterns the build agent enables and which easing curves it uses. SOP 13 reads this; falls back to `restrained` if file is missing.",
+  "type": "object",
+  "required": ["preset"],
+  "additionalProperties": false,
+  "properties": {
+    "$schemaVersion": { "type": "integer", "const": 1 },
+    "preset": {
+      "type": "string",
+      "enum": ["restrained", "energetic", "custom"],
+      "description": "restrained = premium easings only (cubic-bezier(0.16, 1, 0.3, 1) etc.), smaller hover deltas, slower stagger; energetic = overshoot/bounce easings (cubic-bezier(0.34, 1.56, 0.64, 1)), larger deltas, faster stagger; custom = use the overrides below."
+    },
+    "tier2Enabled": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "parallax-hero",
+          "scroll-progress-bar",
+          "magnetic-cta",
+          "number-glow",
+          "image-clip-reveal",
+          "scroll-headline-reveal",
+          "ticker-marquee",
+          "section-stagger-fade"
+        ]
+      },
+      "description": "Tier 2 patterns enabled for this niche. Stack maximum 2 per page to avoid overload."
+    },
+    "easings": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "default": { "type": "string", "description": "CSS cubic-bezier or named easing." },
+        "ctaEntry": { "type": "string" },
+        "ctaExit": { "type": "string" },
+        "cardHover": { "type": "string" },
+        "scrollReveal": { "type": "string" }
+      }
+    },
+    "durations": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "hover": { "type": "string", "description": "e.g. \"220ms\"." },
+        "hoverOut": { "type": "string" },
+        "reveal": { "type": "string" },
+        "entranceStagger": { "type": "string" },
+        "pageTransition": { "type": "string" }
+      }
+    },
+    "honorsReducedMotion": {
+      "type": "boolean",
+      "const": true,
+      "description": "Must be true. The build agent enforces prefers-reduced-motion regardless of preset."
+    }
+  }
+}

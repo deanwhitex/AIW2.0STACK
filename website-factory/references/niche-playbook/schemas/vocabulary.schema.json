@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./vocabulary.schema.json",
+  "title": "Niche playbook: vocabulary",
+  "description": "Niche-specific section names, nav labels, and verb choices. Lets a hospitality niche render \"Plan Your Stay\" where a contractor niche renders \"Get a Quote\". Module 2D derives from the top-of-niche reference pool.",
+  "type": "object",
+  "required": ["sectionNames", "navLabels"],
+  "additionalProperties": false,
+  "properties": {
+    "$schemaVersion": { "type": "integer", "const": 1 },
+    "sectionNames": {
+      "type": "object",
+      "description": "Niche-specific section labels keyed by the component / section slug.",
+      "additionalProperties": { "type": "string", "minLength": 2 },
+      "examples": [
+        {
+          "services": "Our Services",
+          "founder": "Meet the Team",
+          "reviews": "Customer Reviews",
+          "process": "Our Process"
+        }
+      ]
+    },
+    "navLabels": {
+      "type": "object",
+      "description": "Top-nav item labels keyed by route slug.",
+      "additionalProperties": { "type": "string", "minLength": 2 }
+    },
+    "ctaVerbs": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 2, "maxLength": 30 },
+      "description": "Acceptable CTA verbs for this niche. Used by the copywriting framework to vary CTAs across sections without breaking voice."
+    },
+    "audienceNouns": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "endCustomer": {
+          "type": "string",
+          "description": "What this niche calls the end customer: \"homeowner\", \"guest\", \"couple\", \"patient\", \"shopper\", etc."
+        },
+        "endCustomerPlural": { "type": "string" },
+        "endCustomerPossessive": { "type": "string", "description": "e.g. \"your home\", \"your stay\", \"your wedding\"." }
+      }
+    },
+    "categoryNouns": {
+      "type": "object",
+      "description": "Niche-specific terms for service/offering categories. Example: contractor \"service\", hospitality \"experience\", e-commerce \"category\".",
+      "additionalProperties": { "type": "string" }
+    }
+  }
+}

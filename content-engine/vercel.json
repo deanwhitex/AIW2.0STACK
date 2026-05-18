@@ -1,0 +1,29 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "crons": [
+    {
+      "path": "/api/cron/radar",
+      "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron/performance",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/recover-stuck",
+      "schedule": "0 7 * * *"
+    }
+  ],
+  "functions": {
+    "src/app/api/context/upload/route.ts": { "maxDuration": 300 },
+    "src/app/api/context/route.ts": { "maxDuration": 300 },
+    "src/app/api/setup/propose-expert/route.ts": { "maxDuration": 300 },
+    "src/app/api/cron/radar/route.ts": { "maxDuration": 300 },
+    "src/app/api/cron/performance/route.ts": { "maxDuration": 300 },
+    "src/app/api/cron/recover-stuck/route.ts": { "maxDuration": 300 },
+    "src/app/api/generate/route.ts": { "maxDuration": 120 },
+    "src/app/api/webhooks/apify/route.ts": { "maxDuration": 300 },
+    "src/app/api/radar/scan/route.ts": { "maxDuration": 300 },
+    "src/app/api/webhooks/assemblyai/route.ts": { "maxDuration": 60 }
+  }
+}

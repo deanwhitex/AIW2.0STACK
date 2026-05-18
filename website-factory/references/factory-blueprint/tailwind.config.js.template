@@ -1,0 +1,65 @@
+/**
+ * Tailwind config template. Module 2D substitutes the {{...}} slots
+ * with per-niche values from niche-design-tokens.json + the niche
+ * playbook's motion-preset.json before writing this to
+ * templates/{niche-slug}/tailwind.config.js.
+ */
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
+  theme: {
+    extend: {
+      colors: {
+        // RGB-triplet bindings to the CSS variables stamped into index.css.
+        primary: 'rgb(var(--primary) / <alpha-value>)',
+        'primary-dark': 'rgb(var(--primary-dark) / <alpha-value>)',
+        'primary-slate': 'rgb(var(--primary-slate) / <alpha-value>)',
+        accent: 'rgb(var(--accent) / <alpha-value>)',
+        'accent-light': 'rgb(var(--accent-light) / <alpha-value>)',
+        'accent-dark': 'rgb(var(--accent-dark) / <alpha-value>)',
+        neutral: 'rgb(var(--neutral) / <alpha-value>)',
+        'neutral-dim': 'rgb(var(--neutral-dim) / <alpha-value>)',
+        silver: 'rgb(var(--silver) / <alpha-value>)',
+        ink: 'rgb(var(--ink) / <alpha-value>)',
+      },
+      fontFamily: {
+        heading: ['{{TYPOGRAPHY_HEADING}}', 'serif'],
+        body: ['{{TYPOGRAPHY_BODY}}', 'sans-serif'],
+      },
+      // Foundation type scale (1.25 modular). Universal across every niche;
+      // niches override via per-section component classes if their wireframe
+      // demands a different display size.
+      fontSize: {
+        xs: ['0.75rem', { lineHeight: '1.5' }],
+        sm: ['0.875rem', { lineHeight: '1.6' }],
+        base: ['1rem', { lineHeight: '1.6' }],
+        lg: ['1.125rem', { lineHeight: '1.55' }],
+        xl: ['1.25rem', { lineHeight: '1.5' }],
+        '2xl': ['1.5rem', { lineHeight: '1.4' }],
+        '3xl': ['1.875rem', { lineHeight: '1.3' }],
+        '4xl': ['2.5rem', { lineHeight: '1.15' }],
+        '5xl': ['3.5rem', { lineHeight: '1.1' }],
+        '6xl': ['4.75rem', { lineHeight: '1.05' }],
+      },
+      // 8pt spacing scale with named tokens.
+      spacing: {
+        'section-gap': '4rem',
+        'section-gap-lg': '6rem',
+        'card-pad': '1.5rem',
+      },
+      // Two-layer shadow utilities (ambient + direct).
+      boxShadow: {
+        card: '0 1px 2px rgba(0,0,0,0.06), 0 2px 6px rgba(0,0,0,0.04)',
+        'card-lg': '0 2px 4px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.08)',
+        floating: '0 4px 8px rgba(0,0,0,0.08), 0 16px 48px rgba(0,0,0,0.12)',
+      },
+      // Premium easings (used by transitions; framer-motion uses
+      // --motion-easing-* CSS vars directly).
+      transitionTimingFunction: {
+        'premium-out': 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'premium-in': 'cubic-bezier(0.7, 0, 0.84, 0)',
+      },
+    },
+  },
+  plugins: [],
+};

@@ -1,0 +1,39 @@
+{
+  "version": 2,
+  "module": "not_started",
+  "niche": null,
+  "studentName": null,
+  "gates": {
+    "setup.complete": false,
+    "agency.brandLocked": false,
+    "m1.profileLocked": false,
+    "m2a.scoresLocked": false,
+    "m2b.researchComplete": false,
+    "m2c.nicheDecided": false,
+    "m2d.templateBuilt": false,
+    "m3.offerLocked": false,
+    "m4.factoryStructureLoaded": false,
+    "m5.factoryBriefLocked": false,
+    "factory.tailored": false,
+    "factory.deployed": false,
+    "m6.engineStructureLoaded": false,
+    "m7.engineBriefLocked": false,
+    "engine.deployed": false,
+    "engine.contextPasted": false,
+    "factory.generated": false
+  },
+  "credentials": {
+    "anthropic": false,
+    "apify": false,
+    "supabase": false,
+    "vercel": false,
+    "assemblyAi": false,
+    "github": false
+  },
+  "deployments": {
+    "factory": null,
+    "engine": null
+  },
+  "factoryRuns": [],
+  "history": []
+}

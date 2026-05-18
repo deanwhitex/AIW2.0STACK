@@ -1,0 +1,53 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./hero-mood-mapping.schema.json",
+  "title": "Niche playbook: hero-mood-mapping",
+  "description": "Maps brand-dna.hero.mood values to lighting briefs the Gemini Image API uses at Stage 9. Every niche ships at minimum the five universal moods; niches add niche-specific moods (e.g. candlelit_intimate for hospitality, storm_dramatic for storm-restoration contractors).",
+  "type": "object",
+  "required": ["defaultMood", "moods"],
+  "additionalProperties": false,
+  "properties": {
+    "$schemaVersion": { "type": "integer", "const": 1 },
+    "defaultMood": {
+      "type": "string",
+      "description": "Mood used when brand-dna.hero.mood is not set. Must match a key in `moods`."
+    },
+    "moods": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["lightingBrief"],
+        "additionalProperties": false,
+        "properties": {
+          "lightingBrief": {
+            "type": "string",
+            "minLength": 20,
+            "description": "Plain-language lighting description sent to Gemini Image. Example: \"Warm directional light from low angle, long soft shadows, saturated golden tones.\""
+          },
+          "skyDescriptor": { "type": "string", "description": "Optional sky / background descriptor." },
+          "shadowDescriptor": { "type": "string", "description": "Optional shadow description." },
+          "colorWarmth": {
+            "type": "string",
+            "enum": ["warm", "neutral", "cool", "mixed"],
+            "description": "Overall colour temperature."
+          }
+        }
+      },
+      "minProperties": 1,
+      "description": "Mood-name → lighting-brief object. Universal moods all niches typically ship: golden_hour_warm, overcast_calm, dramatic_dusk, bright_midday_clean, dawn_soft_optimistic."
+    },
+    "regionalOverrides": {
+      "type": "array",
+      "description": "Optional list of region → default-mood overrides. Example: tropical niche regions default to bright_midday_clean.",
+      "items": {
+        "type": "object",
+        "required": ["region", "mood"],
+        "additionalProperties": false,
+        "properties": {
+          "region": { "type": "string" },
+          "mood": { "type": "string", "description": "Must match a key in `moods`." }
+        }
+      }
+    }
+  }
+}

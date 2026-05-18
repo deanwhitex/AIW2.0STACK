@@ -1,0 +1,31 @@
+.DS_Store
+.env
+.env.local
+.env.*.local
+
+node_modules/
+dist/
+build/
+.next/
+out/
+
+# Deployment artifacts that contain URLs and live data
+deployments/factory/build/
+deployments/factory/secrets/
+deployments/engine/secrets/
+
+# Local logs
+logs/*.log
+logs/*.jsonl
+
+# Apify raw dumps can grow large
+research/02-niche-research/*/raw/
+
+# Claude Code session caches
+.claude/cache/
+.claude/.local/
+
+# OS files
+*.swp
+*.swo
+Thumbs.db

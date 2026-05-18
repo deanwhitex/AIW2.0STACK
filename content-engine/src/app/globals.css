@@ -1,0 +1,258 @@
+@import "tailwindcss";
+
+/* =============================================================================
+ * AIW Content Engine — design tokens
+ *
+ * Single source of truth for color, type, spacing, motion, and the AIW brand
+ * palette. No raw hex values in components — refer back here.
+ * Logo cues: bold monochrome circle, italic wordmark, sparkle stars, swooshing
+ * arc. Accent is a deliberate AIW orange that reads warm and confident on the
+ * dark surface without fighting the monochrome mark.
+ * ============================================================================= */
+
+:root {
+  /* Surfaces (dark theme primary) */
+  --color-background: #0A0A0B;
+  --color-surface: #131316;
+  --color-surface-raised: #1A1A1F;
+  --color-foreground: #FAFAFA;
+  /* Bumped from #A0A0A8 -> passes 4.5:1 against background and surface (was 3.5:1) */
+  --color-secondary: #B4B4BD;
+  --color-muted: #7A7A86;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.14);
+
+  /* AIW accent -- metallic silver. Cool light tones that read sleek on
+     the dark surface. The gradient (defined as a separate token below)
+     gives primary buttons a brushed-metal sheen; the flat colour here
+     covers everything else (badges, focus rings, accent text). */
+  --color-accent: #E5E5EA;
+  --color-accent-soft: rgba(229, 229, 234, 0.10);
+  --color-accent-glow: rgba(229, 229, 234, 0.22);
+  --color-accent-strong: #F5F5F7;
+  --metallic-button: linear-gradient(180deg, #FAFAFA 0%, #E5E5EA 45%, #C9CACF 100%);
+  --metallic-button-hover: linear-gradient(180deg, #FFFFFF 0%, #EDEDEF 45%, #D6D7DC 100%);
+  --metallic-button-active: linear-gradient(180deg, #DADADE 0%, #C2C3C8 100%);
+
+  /* Status palette */
+  --color-success: #10B981;
+  --color-success-soft: rgba(16, 185, 129, 0.12);
+  --color-warning: #F59E0B;
+  --color-warning-soft: rgba(245, 158, 11, 0.12);
+  --color-danger: #EF4444;
+  --color-danger-soft: rgba(239, 68, 68, 0.12);
+  --color-info: #3B82F6;
+  --color-info-soft: rgba(59, 130, 246, 0.12);
+
+  /* Bucket palette (icon + soft tint pairs, no more inline color-mix) */
+  --color-bucket-video-ideas: #F59E0B;
+  --color-bucket-video-ideas-soft: rgba(245, 158, 11, 0.14);
+  --color-bucket-inspiration: #A855F7;
+  --color-bucket-inspiration-soft: rgba(168, 85, 247, 0.14);
+  --color-bucket-expert: #3B82F6;
+  --color-bucket-expert-soft: rgba(59, 130, 246, 0.14);
+  --color-bucket-voice: #10B981;
+  --color-bucket-voice-soft: rgba(16, 185, 129, 0.14);
+  --color-bucket-business: #FF7A00;
+  --color-bucket-business-soft: rgba(255, 122, 0, 0.14);
+  --color-bucket-instructions: #8E8E98;
+  --color-bucket-instructions-soft: rgba(142, 142, 152, 0.14);
+  --color-bucket-feedback: #EC4899;
+  --color-bucket-feedback-soft: rgba(236, 72, 153, 0.14);
+
+  /* Type scale (size / line-height pairings, applied via Tailwind utilities below) */
+  --font-display-size: 28px;
+  --font-display-line: 32px;
+  --font-h1-size: 22px;
+  --font-h1-line: 28px;
+  --font-h2-size: 18px;
+  --font-h2-line: 24px;
+  --font-body-size: 14px;
+  --font-body-line: 20px;
+  --font-label-size: 12px;
+  --font-label-line: 16px;
+  --font-caption-size: 11px;
+  --font-caption-line: 14px;
+
+  /* Motion */
+  --motion-fast: 150ms;
+  --motion-base: 200ms;
+  --motion-slow: 300ms;
+  --motion-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-ease-in: cubic-bezier(0.4, 0, 1, 1);
+}
+
+@theme inline {
+  --color-background: var(--color-background);
+  --color-surface: var(--color-surface);
+  --color-surface-raised: var(--color-surface-raised);
+  --color-foreground: var(--color-foreground);
+  --color-secondary: var(--color-secondary);
+  --color-muted: var(--color-muted);
+  --color-border: var(--color-border);
+  --color-border-strong: var(--color-border-strong);
+
+  --color-accent: var(--color-accent);
+  --color-accent-soft: var(--color-accent-soft);
+  --color-accent-glow: var(--color-accent-glow);
+  --color-accent-strong: var(--color-accent-strong);
+
+  --color-success: var(--color-success);
+  --color-success-soft: var(--color-success-soft);
+  --color-warning: var(--color-warning);
+  --color-warning-soft: var(--color-warning-soft);
+  --color-danger: var(--color-danger);
+  --color-danger-soft: var(--color-danger-soft);
+  --color-info: var(--color-info);
+  --color-info-soft: var(--color-info-soft);
+
+  --animate-fade-in: fade-in 0.4s ease-out both;
+  --animate-fade-in-up: fade-in-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  --animate-pulse-soft: pulse-soft 2s ease-in-out infinite;
+  --animate-skeleton: skeleton-shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+@keyframes skeleton-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+html, body {
+  background: var(--color-background);
+  color: var(--color-foreground);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Type scale utilities. Use these instead of inline text-[10px] etc. */
+@layer utilities {
+  .text-display {
+    font-size: var(--font-display-size);
+    line-height: var(--font-display-line);
+    letter-spacing: -0.02em;
+  }
+  .text-h1 {
+    font-size: var(--font-h1-size);
+    line-height: var(--font-h1-line);
+    letter-spacing: -0.015em;
+  }
+  .text-h2 {
+    font-size: var(--font-h2-size);
+    line-height: var(--font-h2-line);
+    letter-spacing: -0.01em;
+  }
+  .text-body {
+    font-size: var(--font-body-size);
+    line-height: var(--font-body-line);
+  }
+  .text-label {
+    font-size: var(--font-label-size);
+    line-height: var(--font-label-line);
+  }
+  .text-caption {
+    font-size: var(--font-caption-size);
+    line-height: var(--font-caption-line);
+  }
+
+  /* AIW brand wordmark — italic with subtle slant to echo the logo */
+  .aiw-wordmark {
+    font-style: italic;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+
+  /* Skeleton block — used in loading states */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--color-surface) 0%,
+      var(--color-surface-raised) 50%,
+      var(--color-surface) 100%
+    );
+    background-size: 200% 100%;
+    animation: var(--animate-skeleton);
+    border-radius: 8px;
+  }
+
+  /* Metallic silver primary button. Gradient gives a brushed-metal
+     sheen; subtle inner border simulates a bevel. Black text reads
+     crisply on the silver fill. */
+  .btn-metallic {
+    background-image: var(--metallic-button);
+    color: #0A0A0B;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.6),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+      0 1px 2px rgba(0, 0, 0, 0.4);
+    transition: background-image 150ms ease-out, box-shadow 150ms ease-out;
+  }
+  .btn-metallic:hover:not(:disabled) {
+    background-image: var(--metallic-button-hover);
+  }
+  .btn-metallic:active:not(:disabled) {
+    background-image: var(--metallic-button-active);
+    box-shadow:
+      inset 0 1px 2px rgba(0, 0, 0, 0.2),
+      0 0 0 transparent;
+  }
+}
+
+/* Scrollbars */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* Selection */
+::selection {
+  background: var(--color-accent-soft);
+  color: var(--color-foreground);
+}
+
+/* Focus visibility — every interactive element must show a clear ring on
+   keyboard focus. Mouse focus is suppressed (focus-visible only). */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* Reduced motion respect */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,129 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "./proposal-pages.schema.json",
+  "title": "Proposal pages (per-niche)",
+  "description": "Per-niche page list the Stage 13 proposal generator consumes. Module 2D writes this from the niche wireframe + sitemap. The proposal generator renders PAGE_DATA into the proposal HTML modal so the agency can walk the lead through what's on their site.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schemaVersion", "pages"],
+  "properties": {
+    "$schemaVersion": { "type": "integer", "const": 1 },
+
+    "pages": {
+      "type": "array",
+      "description": "Static pages every client in this niche ships. The order here is the order they render in the proposal modal.",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/Page" }
+    },
+
+    "perServicePageTemplate": {
+      "description": "Section template the generator expands once per service in the active client's strategy.json -> services[]. The generator emits `/services/{slug}` pages from this template. Token {service_name} resolves to the service's display name and {service_slug} to its URL slug.",
+      "$ref": "#/definitions/SectionList"
+    },
+
+    "perAreaPageTemplate": {
+      "description": "Section template the generator expands once per service area (capped at 6 so the proposal modal stays scannable). The generator emits `/service-area/{slug}` pages from this template. Token {city} resolves to the area name.",
+      "$ref": "#/definitions/SectionList"
+    },
+
+    "aliasPages": {
+      "type": "array",
+      "description": "Niche-specific alias pages (e.g. roofing's stormdamage / insuranceclaims, hospitality's bookings / event-spaces). Each alias resolves its URL by matching the active client's services list against `urlFromService` needles; falls back to `fallbackUrl` when no service matches.",
+      "items": { "$ref": "#/definitions/AliasPage" }
+    }
+  },
+
+  "definitions": {
+    "Page": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "url", "tier", "sections"],
+      "properties": {
+        "id": { "type": "string", "description": "Unique page ID matching the proposal HTML's openPage() calls.", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "description": "Relative URL into the per-client built site, or homepage anchor.", "pattern": "^/" },
+        "tier": {
+          "type": "string",
+          "enum": ["root", "core", "pillar"],
+          "description": "Where the page sits in the proposal modal's sitemap pyramid. `root` renders at the top (typically one page, the homepage). `core` renders in Tier 1 (the universally-useful pages every site ships, e.g. About, Contact, Reviews). `pillar` renders in Tier 2 (the niche-specific pillar surfaces that drive the niche's conversion mechanic, e.g. Services + Locations for a contractor; Bookings + Menu for hospitality)."
+        },
+        "hasSilos": {
+          "type": "string",
+          "enum": ["service", "city"],
+          "description": "Optional. When set, the pyramid box renders a `+N` count badge pulled from the silo-page expansion (services for `service`, areas for `city`). Used for pillar pages that fan out to child silos (e.g. Services has perServicePageTemplate expansion; Locations has perAreaPageTemplate expansion)."
+        },
+        "sections": { "$ref": "#/definitions/SectionList" }
+      }
+    },
+
+    "AliasPage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "tier", "sections"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "tier": {
+          "type": "string",
+          "enum": ["root", "core", "pillar"],
+          "description": "Same semantics as Page.tier. Alias pages typically sit in Tier 2 (`pillar`) since they're niche-specific shortcut surfaces (Storm Damage, Insurance Claims, etc.)."
+        },
+        "urlFromService": {
+          "type": "array",
+          "description": "Needle list passed to _find_service(); the first matching service supplies the URL. Example: ['storm', 'hail', 'wind'] resolves to /services/{slug} for the first matching service.",
+          "items": { "type": "string", "minLength": 1 },
+          "minItems": 1
+        },
+        "fallbackUrl": {
+          "type": "string",
+          "description": "URL when no service in `urlFromService` matches.",
+          "pattern": "^/"
+        },
+        "fallbackTitleFromService": {
+          "type": "boolean",
+          "description": "If true and a service matched, override `title` with the matched service's name. Default false.",
+          "default": false
+        },
+        "sections": { "$ref": "#/definitions/SectionList" }
+      }
+    },
+
+    "SectionList": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sections"],
+      "properties": {
+        "sections": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/Section" }
+        }
+      }
+    },
+
+    "Section": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "description", "tag"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Display name of the section in the proposal modal. May contain {token} placeholders.",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "description": "One-sentence description of what the section does + how it lands for the end customer. May contain {token} placeholders.",
+          "minLength": 1
+        },
+        "tag": {
+          "type": "string",
+          "description": "Function tag the proposal modal uses to colour the chip.",
+          "enum": ["Convert", "Trust", "Proof", "Pitch", "SEO", "Local", "Process", "Doc", "AEO", "Team", "Story", "Stat", "UX", "Info"]
+        }
+      }
+    }
+  },
+
+  "$comment": "Supported tokens for {placeholder} substitution: {owner_first} (defaults to 'Owner'), {brand_short} (defaults to 'the company'), {service_count}, {city_count}, {city} (per-area pages only), {service_name} + {service_slug} (per-service pages only)."
+}

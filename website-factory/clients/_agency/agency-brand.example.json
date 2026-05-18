@@ -1,0 +1,239 @@
+{
+  "$schemaVersion": 2,
+  "$schema-note": "Sample shape only. Copy to agency-brand.json and fill every sentinel placeholder shown below. Drop matching asset files into clients/_agency/assets/. Validated by build-proposal.py at every Stage 13 run.",
+  "name": "__REQUIRED__AGENCY_NAME__",
+  "domain": "__REQUIRED__AGENCY_DOMAIN__",
+  "youtube_channel": null,
+  "founder": {
+    "name": "__REQUIRED__FOUNDER_FULL_NAME__",
+    "first_name": "__REQUIRED__FOUNDER_FIRST_NAME__",
+    "title": "__REQUIRED__FOUNDER_TITLE__",
+    "portrait_path": "assets/founder-portrait.jpg",
+    "portrait_caption": "__REQUIRED__PORTRAIT_CAPTION__",
+    "signature_path": null
+  },
+  "owner_pronoun_subj": "they",
+  "niche": {
+    "noun": "__REQUIRED__NICHE_NOUN_LOWER__",
+    "noun_title": "__REQUIRED__NICHE_NOUN_TITLE__",
+    "verb": "__REQUIRED__NICHE_VERB__",
+    "end_customer": "__REQUIRED__NICHE_END_CUSTOMER__"
+  },
+  "intro": {
+    "value_props": [
+      {
+        "strong": "__REQUIRED__STAT_1_NUMBER__",
+        "tail": "__REQUIRED__STAT_1_DESCRIPTION__"
+      },
+      {
+        "strong": "__REQUIRED__STAT_2_NUMBER__",
+        "tail": "__REQUIRED__STAT_2_DESCRIPTION__"
+      },
+      {
+        "strong": "__REQUIRED__STAT_3_NUMBER__",
+        "tail": "__REQUIRED__STAT_3_DESCRIPTION__"
+      }
+    ],
+    "promise": "__REQUIRED__YOUR_PROMISE_TO_CLIENTS__",
+    "promise_strong": "__REQUIRED__THE_BOLD_CONCLUSION__"
+  },
+  "reviews": [
+    {
+      "name": "__REQUIRED__REVIEWER_1_NAME__",
+      "platform": "google",
+      "rating": 5.0,
+      "avatar_path": "assets/review-avatars/1.webp",
+      "text": "__REQUIRED__REVIEW_1_TEXT__"
+    },
+    {
+      "name": "__REQUIRED__REVIEWER_2_NAME__",
+      "platform": "facebook",
+      "rating": 5.0,
+      "avatar_path": "assets/review-avatars/2.webp",
+      "text": "__REQUIRED__REVIEW_2_TEXT__"
+    },
+    {
+      "name": "__REQUIRED__REVIEWER_3_NAME__",
+      "platform": "google",
+      "rating": 5.0,
+      "avatar_path": "assets/review-avatars/3.webp",
+      "text": "__REQUIRED__REVIEW_3_TEXT__"
+    }
+  ],
+  "review_total_count": 0,
+  "review_platforms_label": "Google + Facebook",
+  "client_builds": [
+    {
+      "name": "__REQUIRED__CLIENT_1_NAME__",
+      "url": "__REQUIRED__CLIENT_1_LIVE_URL__",
+      "screenshot_path": "assets/client-builds/1.webp",
+      "owner_quote": "__REQUIRED__CLIENT_1_OWNER_QUOTE__",
+      "owner_name": "__REQUIRED__CLIENT_1_OWNER_NAME__"
+    }
+  ],
+  "case_studies": [
+    {
+      "slug": "1",
+      "owner_name": "__REQUIRED__CASE_STUDY_1_OWNER__",
+      "video_path": "assets/case-studies/1.mp4",
+      "poster_path": null
+    }
+  ],
+  "proof": {
+    "stat": "__REQUIRED__PROOF_STAT__",
+    "stat_subtitle": "__REQUIRED__PROOF_STAT_SUBTITLE__",
+    "intro_paragraph": "__REQUIRED__PROOF_INTRO_PARAGRAPH__",
+    "video_url": null,
+    "video_path": "assets/proof-video.mp4",
+    "video_thumbnail_url": "__REQUIRED__PROOF_VIDEO_THUMBNAIL_URL__",
+    "video_title": "__REQUIRED__PROOF_VIDEO_TITLE__",
+    "video_caption": "Watch the story"
+  },
+  "three_reasons": [
+    {
+      "title": "__REQUIRED__REASON_1_TITLE__",
+      "body": "__REQUIRED__REASON_1_BODY__"
+    },
+    {
+      "title": "__REQUIRED__REASON_2_TITLE__",
+      "body": "__REQUIRED__REASON_2_BODY__"
+    },
+    {
+      "title": "__REQUIRED__REASON_3_TITLE__",
+      "body": "__REQUIRED__REASON_3_BODY__"
+    }
+  ],
+  "winning_formula": {
+    "outcome_line": "__REQUIRED__FORMULA_OUTCOME_LINE__",
+    "traffic": {
+      "feature_card": {
+        "title": "__REQUIRED__TRAFFIC_CARD_TITLE__",
+        "tag": "SEO",
+        "meta": "__REQUIRED__TRAFFIC_CARD_META__",
+        "bullets": [
+          "__REQUIRED__TRAFFIC_BULLET_1__",
+          "__REQUIRED__TRAFFIC_BULLET_2__",
+          "__REQUIRED__TRAFFIC_BULLET_3__"
+        ],
+        "stat_num": "__REQUIRED__TRAFFIC_STAT_NUM__",
+        "stat_text": "__REQUIRED__TRAFFIC_STAT_TEXT__",
+        "cta_label": "__REQUIRED__TRAFFIC_CTA_LABEL__",
+        "cta_anchor": "#hero"
+      },
+      "audit_heading": "__REQUIRED__TRAFFIC_AUDIT_HEADING__",
+      "audit_bullets": [
+        "__REQUIRED__AUDIT_BULLET_1__",
+        "__REQUIRED__AUDIT_BULLET_2__",
+        "__REQUIRED__AUDIT_BULLET_3__",
+        "__REQUIRED__AUDIT_BULLET_4__",
+        "__REQUIRED__AUDIT_BULLET_5__"
+      ]
+    },
+    "trust": {
+      "cards": [
+        {
+          "title": "__REQUIRED__TRUST_CARD_1_TITLE__",
+          "tag": "TRUST",
+          "meta": "__REQUIRED__TRUST_CARD_1_META__",
+          "bullets": [
+            "__REQUIRED__TRUST_CARD_1_BULLET_1__",
+            "__REQUIRED__TRUST_CARD_1_BULLET_2__",
+            "__REQUIRED__TRUST_CARD_1_BULLET_3__"
+          ],
+          "stat_num": "__REQUIRED__TRUST_CARD_1_STAT_NUM__",
+          "stat_text": "__REQUIRED__TRUST_CARD_1_STAT_TEXT__",
+          "cta_label": "__REQUIRED__TRUST_CARD_1_CTA_LABEL__",
+          "cta_anchor": "#hero",
+          "ai_highlight": false
+        }
+      ]
+    },
+    "conversion": {
+      "cards": [
+        {
+          "title": "__REQUIRED__CONVERSION_CARD_1_TITLE__",
+          "tag": "CONVERT",
+          "meta": "__REQUIRED__CONVERSION_CARD_1_META__",
+          "bullets": [
+            "__REQUIRED__CONVERSION_CARD_1_BULLET_1__",
+            "__REQUIRED__CONVERSION_CARD_1_BULLET_2__",
+            "__REQUIRED__CONVERSION_CARD_1_BULLET_3__"
+          ],
+          "stat_num": "__REQUIRED__CONVERSION_CARD_1_STAT_NUM__",
+          "stat_text": "__REQUIRED__CONVERSION_CARD_1_STAT_TEXT__",
+          "cta_label": "__REQUIRED__CONVERSION_CARD_1_CTA_LABEL__",
+          "cta_anchor": "#hero",
+          "ai_highlight": false
+        }
+      ]
+    }
+  },
+  "ai_infrastructure": {
+    "stack_name": "__REQUIRED__YOUR_AI_STACK_NAME__",
+    "platforms": [
+      "__REQUIRED__PLATFORM_1__",
+      "__REQUIRED__PLATFORM_2__"
+    ],
+    "details_html": "__REQUIRED__AI_STACK_DETAILS_HTML__"
+  },
+  "timeline": {
+    "headline": "__REQUIRED__TIMELINE_HEADLINE__",
+    "days_to_live": 3,
+    "steps": [
+      {
+        "day": 1,
+        "title": "__REQUIRED__STEP_1_TITLE__",
+        "details": "__REQUIRED__STEP_1_DETAILS__"
+      }
+    ]
+  },
+  "guarantee": {
+    "headline": "__REQUIRED__GUARANTEE_HEADLINE__",
+    "details_html": "__REQUIRED__GUARANTEE_DETAILS_HTML__",
+    "seal_path": "assets/guarantee-seal.png"
+  },
+  "pricing": {
+    "model": "__REQUIRED__YOUR_PRICING_MODEL__",
+    "currency": "USD",
+    "setup_fee_price_display": "__REQUIRED__SETUP_FEE_PRICE__",
+    "setup_fee_standard_display": "__REQUIRED__SETUP_FEE_STANDARD__",
+    "one_time_offer_price_display": "__REQUIRED__ONE_TIME_OFFER_PRICE__",
+    "monthly_fee_price_display": "__REQUIRED__MONTHLY_FEE_PRICE__",
+    "stacked_value_total_display": "__REQUIRED__STACKED_VALUE_TOTAL__",
+    "value_stack": [
+      {
+        "name": "__REQUIRED__VALUE_STACK_LINE_1_NAME__",
+        "msrp": "__REQUIRED__VALUE_STACK_LINE_1_MSRP__"
+      },
+      {
+        "name": "__REQUIRED__VALUE_STACK_LINE_2_NAME__",
+        "msrp": "__REQUIRED__VALUE_STACK_LINE_2_MSRP__"
+      },
+      {
+        "name": "__REQUIRED__VALUE_STACK_LINE_3_NAME__",
+        "msrp": "__REQUIRED__VALUE_STACK_LINE_3_MSRP__"
+      },
+      {
+        "name": "__REQUIRED__VALUE_STACK_LINE_4_NAME__",
+        "msrp": "__REQUIRED__VALUE_STACK_LINE_4_MSRP__"
+      },
+      {
+        "name": "__REQUIRED__VALUE_STACK_LINE_5_NAME__",
+        "msrp": "__REQUIRED__VALUE_STACK_LINE_5_MSRP__"
+      }
+    ],
+    "roi_defaults": {
+      "leads_per_month": "__REQUIRED__ROI_DEFAULT_LEADS_PER_MONTH__",
+      "ticket_size_display": "__REQUIRED__ROI_DEFAULT_TICKET_SIZE__",
+      "lift_display": "__REQUIRED__ROI_DEFAULT_LIFT__"
+    }
+  },
+  "palette": {
+    "primary": "__REQUIRED__PALETTE_PRIMARY_HEX__",
+    "primary_deep": "__REQUIRED__PALETTE_PRIMARY_DEEP_HEX__",
+    "accent": "__REQUIRED__PALETTE_ACCENT_HEX__"
+  },
+  "sop_password": "__REQUIRED__YOUR_SOP_PASSWORD__",
+  "blueprint_pdf_path": null,
+  "blueprint_pdf_title": "__REQUIRED__BLUEPRINT_DOC_TITLE__"
+}

@@ -1,0 +1,40 @@
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect } from 'react';
+import './index.css';
+
+{{PAGE_IMPORTS}}
+
+/**
+ * Scroll-to-hash on initial mount and on every navigation. Universal.
+ */
+function ScrollToHash() {
+  const { pathname, hash } = useLocation();
+  useEffect(() => {
+    if (!hash) {
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      return;
+    }
+    const id = hash.slice(1);
+    requestAnimationFrame(() => {
+      const el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  }, [pathname, hash]);
+  return null;
+}
+
+/**
+ * Router shell. Module 2D fills {{PAGE_IMPORTS}} with the niche's
+ * generated page imports and {{ROUTES}} with the niche's route list
+ * derived from the niche sitemap.
+ */
+export default function App() {
+  return (
+    <BrowserRouter>
+      <ScrollToHash />
+      <Routes>
+        {{ROUTES}}
+      </Routes>
+    </BrowserRouter>
+  );
+}

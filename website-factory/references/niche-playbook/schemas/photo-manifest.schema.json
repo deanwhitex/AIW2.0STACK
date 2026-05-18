@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./photo-manifest.schema.json",
+  "title": "Niche playbook: photo-manifest",
+  "description": "Required photography shot list per niche. Stage 4 (asset scraping) uses this to enforce minimum counts per category and to flag missing categories as MANUAL-DROP-NEEDED. Per-shot lighting, composition, and dimension hints inform the brief if a photo shoot is needed.",
+  "type": "object",
+  "required": ["categories"],
+  "additionalProperties": false,
+  "properties": {
+    "$schemaVersion": { "type": "integer", "const": 1 },
+    "categories": {
+      "type": "array",
+      "minItems": 1,
+      "description": "One entry per photographic category required by this niche. Modules 2D / 4 enforce counts per category.",
+      "items": {
+        "type": "object",
+        "required": ["slug", "label", "minCount"],
+        "additionalProperties": false,
+        "properties": {
+          "slug": { "type": "string", "pattern": "^[a-z][a-z0-9-]*$" },
+          "label": { "type": "string", "minLength": 2 },
+          "minCount": { "type": "integer", "minimum": 0 },
+          "preferredCount": { "type": "integer", "minimum": 0 },
+          "targetFolder": {
+            "type": "string",
+            "description": "Path under clients/[Client Name]/[Client Name] Assets/ where harvested files for this category land. Example: \"founder-photos/\", \"project-images/\", \"host-photos/\"."
+          },
+          "dimensions": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "minWidth": { "type": "integer", "minimum": 0 },
+              "minHeight": { "type": "integer", "minimum": 0 },
+              "preferredWidth": { "type": "integer", "minimum": 0 },
+              "preferredHeight": { "type": "integer", "minimum": 0 },
+              "aspectRatio": { "type": "string", "description": "e.g. \"16:9\", \"1:1\", \"3:2\"." }
+            }
+          },
+          "lighting": {
+            "type": "string",
+            "enum": ["golden_hour_warm", "overcast_calm", "dramatic_dusk", "bright_midday_clean", "dawn_soft_optimistic", "candlelit_intimate", "studio_clean", "natural_indoor", "any"],
+            "description": "Lighting brief the photographer or stock-photo search should target. \"any\" means no constraint."
+          },
+          "composition": {
+            "type": "string",
+            "description": "Free-form composition note. Example: \"chest-up, neutral background, eye-line to camera\" for owner; \"wide exterior including signage\" for hero."
+          },
+          "notes": {
+            "type": "string",
+            "description": "Any niche-specific guidance (props to include, things to avoid, season constraints, etc.)."
+          },
+          "required": {
+            "type": "boolean",
+            "default": true,
+            "description": "If true, pipeline halts when minCount is not met. If false, just logs a warning."
+          }
+        }
+      }
+    },
+    "stockBan": {
+      "type": "boolean",
+      "default": true,
+      "description": "If true, Stage 4 refuses to substitute stock photos for missing categories. Always true for premium niches; defaults true everywhere."
+    },
+    "photoShootBriefRequired": {
+      "type": "boolean",
+      "default": false,
+      "description": "If true and any category falls below minCount, Stage 4 writes a photo-shoot brief into the proposal for the client to price in."
+    }
+  }
+}

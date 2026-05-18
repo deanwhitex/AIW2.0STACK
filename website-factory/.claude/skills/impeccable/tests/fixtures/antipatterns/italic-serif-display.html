@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Italic-Serif-Display — Should Flag vs Should Pass</title>
+  <style>
+    /* ─── Layout convention: two-column fixture ─────────────────────────
+       Left column = patterns the rule SHOULD flag.
+       Right column = legitimate patterns the rule should NOT flag.
+       Each test case is annotated with a unique <h1>/<h2>/<blockquote>
+       text so the test can match snippets back to expectations.
+       ──────────────────────────────────────────────────────────────── */
+    body { font-family: system-ui, sans-serif; margin: 0; padding: 24px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; max-width: 1200px; margin: 0 auto; }
+    .col h2.col-label { font-size: 14px; text-transform: uppercase; letter-spacing: 0.05em; margin: 0 0 16px; color: #475569; }
+    .case { margin-bottom: 32px; padding: 24px; border: 1px solid #e2e8f0; border-radius: 12px; background: #fff; }
+    .case p { font-size: 14px; margin: 12px 0 0; color: #64748b; }
+
+    /* ── FLAG cases ── */
+
+    /* 1: Fraunces 88px italic — the Lumina hero pattern */
+    .hero-fraunces {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-size: 88px;
+      font-weight: 400;
+      line-height: 1.05;
+      margin: 0;
+    }
+
+    /* 2: Recoleta 64px italic */
+    .hero-recoleta {
+      font-family: 'Recoleta', serif;
+      font-style: italic;
+      font-size: 64px;
+      font-weight: 400;
+      margin: 0;
+    }
+
+    /* 3: Playfair Display 72px italic */
+    .hero-playfair {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 72px;
+      font-weight: 500;
+      margin: 0;
+    }
+
+    /* 4: Unknown serif primary, but generic `serif` fallback in stack */
+    .hero-unknown-serif {
+      font-family: 'CustomSerifFace', serif;
+      font-style: italic;
+      font-size: 56px;
+      font-weight: 400;
+      margin: 0;
+    }
+
+    /* ── PASS cases ── */
+
+    /* a: italic, but sans-serif primary (Karla) — italic display in a sans is rare and usually intentional */
+    .pass-sans-italic {
+      font-family: 'Karla', sans-serif;
+      font-style: italic;
+      font-size: 64px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    /* b: serif at 88px, but font-style: normal */
+    .pass-roman-serif {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: normal;
+      font-size: 88px;
+      font-weight: 600;
+      margin: 0;
+    }
+
+    /* c: italic serif blockquote at 24px (genuine pull quote, not a hero) */
+    .pass-pull-quote {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-size: 24px;
+      font-weight: 400;
+      margin: 0;
+      color: #334155;
+    }
+
+    /* d: roman h1 with an italic <em> inside — v1 explicitly does NOT flag this */
+    .pass-roman-h1-em-italic {
+      font-family: 'Inter', sans-serif;
+      font-style: normal;
+      font-size: 72px;
+      font-weight: 600;
+      margin: 0;
+    }
+    .pass-roman-h1-em-italic em {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    /* e: italic serif h2 at 32px — under the 48px hero threshold */
+    .pass-italic-serif-32 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-style: italic;
+      font-size: 32px;
+      font-weight: 400;
+      margin: 0;
+    }
+
+    /* f: baseline-clean h1 — sans-serif roman */
+    .pass-h1-sans-roman {
+      font-family: 'Inter', sans-serif;
+      font-style: normal;
+      font-size: 64px;
+      font-weight: 700;
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid">
+
+    <!-- ════════════════════════════════════════════════════════════════
+         LEFT COLUMN: should flag
+         ═══════════════════════════════════════════════════════════════ -->
+    <div class="col" data-col="flag">
+      <h2 class="col-label">Should flag</h2>
+
+      <div class="case">
+        <h1 class="hero-fraunces">Fraunces 88px italic</h1>
+        <p>The Lumina hero pattern: oversized Fraunces italic display.</p>
+      </div>
+
+      <div class="case">
+        <h1 class="hero-recoleta">Recoleta 64px italic</h1>
+        <p>Recoleta italic at 64px, generic serif fallback.</p>
+      </div>
+
+      <div class="case">
+        <h1 class="hero-playfair">Playfair 72px italic</h1>
+        <p>Playfair Display italic at hero scale.</p>
+      </div>
+
+      <div class="case">
+        <h1 class="hero-unknown-serif">Unknown Serif Generic Fallback</h1>
+        <p>Primary font unknown to the detector, but the stack ends in generic serif.</p>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════
+         RIGHT COLUMN: should pass
+         ═══════════════════════════════════════════════════════════════ -->
+    <div class="col" data-col="pass">
+      <h2 class="col-label">Should pass</h2>
+
+      <div class="case">
+        <h1 class="pass-sans-italic">Sans Italic Display</h1>
+        <p>Italic at hero scale, but in a sans-serif face.</p>
+      </div>
+
+      <div class="case">
+        <h1 class="pass-roman-serif">Roman Serif Display</h1>
+        <p>Fraunces at 88px, but font-style is normal (not italic).</p>
+      </div>
+
+      <div class="case">
+        <blockquote class="pass-pull-quote">Italic Serif Pull Quote</blockquote>
+        <p>Italic serif at 24px is a legitimate pull-quote pattern, not a hero.</p>
+      </div>
+
+      <div class="case">
+        <h1 class="pass-roman-h1-em-italic">Inline Em Inside <em>Roman</em></h1>
+        <p>Roman h1 with an inline italic em — v1 deliberately does not flag this.</p>
+      </div>
+
+      <div class="case">
+        <h2 class="pass-italic-serif-32">Italic Serif at 32px</h2>
+        <p>Italic serif h2 below the 48px hero threshold.</p>
+      </div>
+
+      <div class="case">
+        <h1 class="pass-h1-sans-roman">h1 Sans-Serif Roman</h1>
+        <p>Baseline-clean control: sans-serif, roman, hero scale.</p>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

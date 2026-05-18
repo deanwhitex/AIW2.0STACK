@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./copy-locks.schema.json",
+  "title": "Niche playbook: copy-locks",
+  "description": "Locked copy strings the build agent renders verbatim across every section of every client's site. Per-niche values written by Module 2D from the niche's top-of-niche analysis (the strongest converting CTAs, form headers, privacy lines observed in the niche's reference pool). Per-client overrides at brand-dna.copy.* take precedence; the playbook is the niche default.",
+  "type": "object",
+  "required": ["ctaPrimary", "ctaSecondary", "formHeader", "formPrivacy", "mobileCallLabel"],
+  "additionalProperties": false,
+  "properties": {
+    "$schemaVersion": { "type": "integer", "const": 1 },
+    "ctaPrimary": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 40,
+      "description": "Primary CTA across every page (hero, mid-page, footer, mobile sticky). Verb-led, niche-specific. Module 2D derives from the highest-converting CTAs observed in the niche's reference pool."
+    },
+    "ctaSecondary": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 40,
+      "description": "Secondary CTA. Typically lower-commitment than the primary."
+    },
+    "formHeader": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 80,
+      "description": "Pre-form header that sets expectation (response time, no-obligation, etc.). Niche-specific."
+    },
+    "formPrivacy": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 120,
+      "description": "Privacy line below the form submit button. Niche-specific reassurance."
+    },
+    "mobileCallLabel": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 30,
+      "description": "Label for the mobile sticky call button during business hours. After hours, the mobile sticky shows ctaPrimary instead."
+    },
+    "thankYouMessage": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 200,
+      "description": "Optional post-submit message. Niche playbook may include a placeholder for {firstName}."
+    },
+    "footerTagline": {
+      "type": "string",
+      "minLength": 4,
+      "maxLength": 80,
+      "description": "Optional short brand promise rendered in the footer. 4-8 words ideal."
+    },
+    "blogIntro": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 200,
+      "description": "Optional blog index intro sentence. Niche-specific framing of why the blog exists."
+    },
+    "trustStripClaims": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 6,
+      "items": { "type": "string", "minLength": 3, "maxLength": 40 },
+      "description": "Short claim phrases rendered in the niche template's trust signal surface (strip, floating pill, ticker, etc.). Module 2D derives these from the top-of-niche reference pool: pick the strongest differentiation claims that recur across the niche's winning sites. Count comes from trust-signals.json `trustStripCount`."
+    },
+    "heroTrustClaims": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 6,
+      "items": { "type": "string", "minLength": 3, "maxLength": 60 },
+      "description": "Trust claim rows rendered under the hero H1 (one row per entry, each with a thin-line Heroicon). Module 2D derives these from the top-of-niche pool: surface 4 outcome-led promises the end customer actually responds to in the niche."
+    },
+    "riskReversalLine": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 200,
+      "description": "Single sentence rendered below the Process grid to neutralise commitment risk. Module 2D writes a niche-specific version anchored to the end customer's biggest fear (e.g. pricing surprise, pushy sales, contractor abandonment for trades; locked-in rates / hidden fees for hospitality)."
+    },
+    "heroH1Format": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 100,
+      "description": "Format string describing the H1 pattern, used by Stage 6 copywriting + Stage 10.4b validator. Module 2D derives the structure from the highest-converting hero patterns in the niche's reference pool."
+    },
+    "reviewsHeaderFormat": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 120,
+      "description": "Format string for the Reviews section header. May include {N} (total review count) and {platform} placeholders the build agent substitutes from per-client brand-dna.trust."
+    },
+    "founderSupportingCards": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "required": ["title"],
+        "additionalProperties": false,
+        "properties": {
+          "title": { "type": "string", "minLength": 2, "maxLength": 24 },
+          "body_template": { "type": "string", "minLength": 10, "maxLength": 300 }
+        }
+      },
+      "description": "Cards rendered below the Founder photo+text row. Card titles + body templates are derived per niche by Module 2D from the top-of-niche reference pool. Card bodies are filled per-client at Stage 6 copywriting."
+    }
+  }
+}

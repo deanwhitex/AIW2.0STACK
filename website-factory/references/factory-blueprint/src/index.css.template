@@ -1,0 +1,69 @@
+/*
+ * index.css template — Module 2D substitutes the {{...}} slots with
+ * per-niche values from niche-design-tokens.json before writing this
+ * file to templates/{niche-slug}/src/index.css.
+ */
+
+@import url('{{GOOGLE_FONTS_URL}}');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Per-niche palette tokens (RGB triplets for tailwind's rgb() alpha) */
+  --primary: {{PALETTE_PRIMARY_RGB}};
+  --primary-dark: {{PALETTE_PRIMARY_DARK_RGB}};
+  --primary-slate: {{PALETTE_PRIMARY_SLATE_RGB}};
+  --accent: {{PALETTE_ACCENT_RGB}};
+  --accent-light: {{PALETTE_ACCENT_LIGHT_RGB}};
+  --accent-dark: {{PALETTE_ACCENT_DARK_RGB}};
+  --neutral: {{PALETTE_NEUTRAL_RGB}};
+  --neutral-dim: {{PALETTE_NEUTRAL_DIM_RGB}};
+  --silver: {{PALETTE_SILVER_RGB}};
+  --ink: {{PALETTE_INK_RGB}};
+
+  /* Foundation tokens (universal) */
+  --glass-opacity: 0.80;
+  --motion-duration: {{MOTION_DURATION_MS}}ms;
+  --motion-stagger: {{MOTION_STAGGER_MS}}ms;
+  --motion-easing-premium-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-easing-premium-in: cubic-bezier(0.7, 0, 0.84, 0);
+}
+
+/* Universal foundation rules (apply to every niche) */
+
+html {
+  /* Smart quotes everywhere */
+  quotes: "\201C" "\201D" "\2018" "\2019";
+  /* Variable-font optical sizing */
+  font-optical-sizing: auto;
+}
+
+/* Tabular figures for any number near another number (prices, ratings, counts) */
+.tabular-nums,
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Reduced-motion gate — universal accessibility rule. Components MUST
+   honour this; motion utilities collapse to near-zero duration. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Em-dash audit (universal). No em-dash should ever land in source.
+   This selector exists as a visible debugging surface during dev: if
+   anyone types one, it renders highlighted so we catch it before ship. */
+[data-em-dash-audit]::after {
+  content: attr(data-em-dash-audit);
+  background: yellow;
+  color: red;
+}

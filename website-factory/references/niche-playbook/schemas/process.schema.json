@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "./process.schema.json",
+  "title": "Niche playbook: process",
+  "description": "Process / How-We-Work section step count and per-step labels. The build agent renders the Process section using these. Per-client brand-dna may override with the client's own process; this is the niche default.",
+  "type": "object",
+  "required": ["stepCount", "steps"],
+  "additionalProperties": false,
+  "properties": {
+    "$schemaVersion": { "type": "integer", "const": 1 },
+    "stepCount": {
+      "type": "integer",
+      "minimum": 3,
+      "maximum": 8,
+      "description": "Total step count. 3-4 for low-friction transactions; 5-6 for considered purchases; 6-8 for high-trust premium services."
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": ["n", "title", "description"],
+        "additionalProperties": false,
+        "properties": {
+          "n": { "type": "integer", "minimum": 1 },
+          "title": { "type": "string", "minLength": 2, "maxLength": 30 },
+          "description": { "type": "string", "minLength": 10, "maxLength": 200 },
+          "iconHint": {
+            "type": "string",
+            "description": "Optional hint for which icon the build agent renders (consult niche-playbook/design-vocabulary.md for icon set)."
+          }
+        }
+      }
+    },
+    "sectionHeading": {
+      "type": "string",
+      "minLength": 5,
+      "maxLength": 60,
+      "description": "Optional section heading override. Default pattern: \"Our [Service] Process\"."
+    }
+  }
+}
