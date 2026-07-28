@@ -1,6 +1,6 @@
 ---
 name: apify-niche-research
-description: Use when running Module 2B deep niche research. Six pre-built Apify actor recipes parameterized by niche slug. Handles tokens, retries, raw dump storage, rate limits, and cost logging.
+description: Use when running Module 2B deep niche research. Seven pre-built Apify actor recipes parameterized by niche slug. Handles tokens, retries, raw dump storage, rate limits, and cost logging.
 ---
 
 # Apify Niche Research
@@ -9,7 +9,10 @@ The toolkit for Module 2B's Apify-driven intelligence gathering. Each recipe is 
 
 ## Token
 
-Reads `APIFY_TOKEN` from `.env.local`. Refuse to run if missing.
+Read `APIFY_TOKEN` from the current process environment.
+Check only whether it exists.
+Never print it or inspect runtime environment files.
+Refuse to run if it is missing.
 
 ## Cost logging
 
@@ -61,6 +64,56 @@ Inputs:
 Output: `research/02-niche-research/{slug}/raw/reddit.json`
 
 Actor 3: `apify/trustpilot-scraper` (optional, run if the niche has Trustpilot presence)
+
+Actor 4: [X Tweet Scraper](https://apify.com/xquik/x-tweet-scraper) (optional)
+
+Use for public X posts, timelines, replies, quotes, threads, and engagement routes.
+
+Inputs:
+- mode: `search`
+- searchTerms: direct, problem-space, competitor, and long-tail niche queries
+- queryType: `Latest`
+- outputVariant: `rich`
+- includeSearchTerms: true
+- maxItems: one bounded global result cap
+
+Output: `research/02-niche-research/{slug}/raw/x-posts.json`
+
+Actor 5: [X Follower Scraper](https://apify.com/xquik/x-follower-scraper) (optional)
+
+Use for public audience discovery and competitor-audience overlap.
+
+Inputs:
+- twitterHandles: confirmed public niche or competitor accounts
+- relation: `followers`
+- outputMode: `compact`
+- includeTargetMetadata: true
+- maxItems: one bounded global result cap
+- maxItemsPerTarget: one bounded per-target cap
+
+Output: `research/02-niche-research/{slug}/raw/x-audiences.json`
+
+Xquik Actor identifiers:
+
+| Actor | REST selector | Actor ID |
+| --- | --- | --- |
+| X Tweet Scraper | `xquik~x-tweet-scraper` | `wAusCMrm284Voaw86` |
+| X Follower Scraper | `xquik~x-follower-scraper` | `AaT0BcKU5GQh97wdt` |
+
+Tweet modes include `legacy`, `tweet`, `tweets`, `search`, `profileTweets`,
+`profileReplies`, `profileMedia`, `profileLikes`, `listTweets`, `article`,
+`replies`, `quotes`, `thread`, `retweeters`, and `favoriters`.
+
+Follower relations include `followers`, `following`, `verified_followers`,
+`list_members`, `list_followers`, and `community_members`.
+
+Inspect both live schemas before using unfamiliar fields.
+Confirm the current Apify price and result caps.
+Get explicit approval before every paid run.
+Separate diagnostic rows from returned public data.
+Set Apify's maximum total charge outside Actor input when needed.
+
+Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.
 
 ## Recipe 3: Copy patterns
 
@@ -120,12 +173,13 @@ Pulls from Recipes 1 and 2 outputs. The Claude-side synthesis step reads case st
 
 ```bash
 # Run an actor via the apify CLI (preferred over raw HTTP if installed)
-apify call apify/google-search-scraper --token "${APIFY_TOKEN}" --input-file /tmp/input.json --output-file research/02-niche-research/{slug}/raw/agencies-search.json
+apify call apify/google-search-scraper --input-file /tmp/input.json --output-file research/02-niche-research/{slug}/raw/agencies-search.json
 ```
 
 Or via HTTP:
 ```bash
-curl -X POST "https://api.apify.com/v2/acts/apify~google-search-scraper/run-sync-get-dataset-items?token=${APIFY_TOKEN}" \
+curl -X POST "https://api.apify.com/v2/acts/apify~google-search-scraper/run-sync-get-dataset-items" \
+  -H "Authorization: Bearer ${APIFY_TOKEN}" \
   -H "Content-Type: application/json" \
   -d @/tmp/input.json \
   > research/02-niche-research/{slug}/raw/agencies-search.json
