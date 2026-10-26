@@ -98,7 +98,7 @@ Goal: identify the keywords end customers actually search and the GBP signals th
 
 Actors:
 - `apify/google-search-scraper` or `apify/serp-scraper`, top 10 ranking pages for each primary keyword.
-- `apify/google-maps-scraper`, GBP density per service city the student plans to target.
+- `johnvc/google-maps-places-api`, GBP density per service city the student plans to target.
 
 Analysis to write into `06-seo-landscape.md`:
 - Primary keyword cluster (3 to 5 highest-volume terms end customers search).
