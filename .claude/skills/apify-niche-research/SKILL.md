@@ -102,13 +102,15 @@ Queries:
 
 Output: `research/02-niche-research/{slug}/raw/serp-rankings.json`
 
-Actor 2: `apify/google-maps-scraper`
+Actor 2: `johnvc/google-maps-places-api`
 
 Inputs:
-- searches: "[niche] near me" in 3 target cities
-- maxItems: 20 per city
+- searchTerms: "[niche] in {city}" for each of the 3 target cities
+- maxResultsPerSearch: 20 per city
 
 Output: `research/02-niche-research/{slug}/raw/gbp-density.json`
+
+Group rows by `searchTerm` to count places per city, and skip any row without a `title` (error rows carry `error_message`).
 
 Actor 3 (optional): `apify/google-keyword-planner-scraper` if available (requires Google Ads account). Falls back to SERP-only analysis if unavailable.
 
